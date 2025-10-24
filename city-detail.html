@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电子商务专升本四班</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2A637D',
+            secondary: '#F49D6E',
+            light: '#F8F9FA',
+            dark: '#2C3E50'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-balance {
+        text-wrap: balance;
+      }
+      .img-zoom {
+        transition: transform 0.5s ease;
+      }
+      .img-zoom:hover {
+        transform: scale(1.02);
+      }
+    }
+  </style>
+</head>
+<body class="bg-light font-sans text-dark">
+  <!-- 导航栏 -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="./index.html" class="text-2xl font-bold text-primary flex items-center">
+        <i class="fa fa-compass mr-2"></i>城探记
+      </a>
+      <nav class="hidden md:flex space-x-8">
+        <a href="./city-list.html" class="text-primary hover:text-primary/80 transition-colors font-medium">城市列表</a>
+        <a href="#" class="text-dark hover:text-primary transition-colors font-medium">文旅专题</a>
+        <a href="#" class="text-dark hover:text-primary transition-colors font-medium">旅行攻略</a>
+        <a href="#" class="text-dark hover:text-primary transition-colors font-medium">关于我们</a>
+      </nav>
+      <button class="md:hidden text-dark text-xl" id="mobileMenuBtn">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+    <!-- 移动端菜单 -->
+    <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
+      <div class="container mx-auto px-4 py-3 space-y-3">
+        <a href="city-list.html" class="block py-2 text-primary">城市列表</a>
+        <a href="#" class="block py-2 text-dark hover:text-primary">文旅专题</a>
+        <a href="#" class="block py-2 text-dark hover:text-primary">旅行攻略</a>
+        <a href="#" class="block py-2 text-dark hover:text-primary">关于我们</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 面包屑导航 -->
+  <section class="bg-white py-4 border-b">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center text-sm text-gray-500">
+        <a href="./index.html" class="hover:text-primary transition-colors">首页</a>
+        <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+        <a href="./city-list.html" class="hover:text-primary transition-colors">城市列表</a>
+        <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+        <span class="text-primary" id="breadcrumbCityName">成都：巴适的天府之国</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 城市详情主内容 -->
+  <section class="py-10">
+    <div class="container mx-auto px-4">
+      <!-- 城市标题与封面图 -->
+      <div class="mb-12">
+        <h1 class="text-[clamp(1.8rem,4vw,3rem)] font-light mb-4 text-balance" id="cityTitle">成都：巴适的天府之国</h1>
+        <div class="flex flex-wrap items-center gap-4 text-gray-500 mb-6" id="cityMeta">
+          <span><i class="fa fa-map-marker mr-1 text-primary"></i> 四川省 · 西南地区</span>
+          <span><i class="fa fa-calendar mr-1 text-primary"></i> 最佳旅行季：3-5月，9-11月</span>
+          <span><i class="fa fa-language mr-1 text-primary"></i> 方言：西南官话-成渝片</span>
+        </div>
+        <div class="relative rounded-xl overflow-hidden h-[40vh] md:h-[50vh]">
+          <img src="https://picsum.photos/id/1060/1920/1080" alt="成都城市风光" class="w-full h-full object-cover img-zoom" id="cityCover">
+          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark/70 to-transparent p-6 md:p-8">
+            <p class="text-white text-lg md:text-xl max-w-3xl" id="cityTagline">“一座来了就不想走的城市”，成都的魅力藏在茶馆的龙门阵里，躲在火锅的麻辣中，写在街头巷尾的悠闲里。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 城市介绍 -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-16">
+        <div class="lg:col-span-2 space-y-6">
+          <div>
+            <h2 class="text-2xl font-medium mb-4 text-primary">城市印象</h2>
+            <div id="cityDescription">
+              <p class="text-gray-700 leading-relaxed">
+                成都，简称“蓉”，是四川省省会，也是西南地区的中心城市。作为古蜀文明的发源地，这里有着4500多年的城市文明史，金沙遗址的太阳神鸟金箔，诉说着古蜀先民的智慧。
+              </p>
+              <p class="text-gray-700 leading-relaxed mt-4">
+                不同于一线城市的快节奏，成都把“慢”刻进了城市基因。街头巷尾的茶馆里，老人端着盖碗茶摆龙门阵（聊天），公园里的市民悠闲地打麻将、唱川剧，连空气中都弥漫着“巴适”（舒适）的气息。
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="cityGallery">
+            <div class="rounded-lg overflow-hidden">
+              <img src="https://picsum.photos/id/1067/800/600" alt="成都茶馆文化" class="w-full h-64 object-cover img-zoom">
+              <p class="text-sm text-gray-500 mt-2 italic">成都茶馆里的悠闲日常，盖碗茶是标配</p>
+            </div>
+            <div class="rounded-lg overflow-hidden">
+              <img src="https://picsum.photos/id/292/800/600" alt="成都火锅" class="w-full h-64 object-cover img-zoom">
+              <p class="text-sm text-gray-500 mt-2 italic">麻辣鲜香的成都火锅，是城市味觉的灵魂</p>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-medium mb-4 text-primary">必体验的文化符号</h2>
+            <ul class="space-y-4" id="culturalSymbols">
+              <li class="flex gap-4">
+                <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+                <div>
+                  <h3 class="font-medium text-lg">川剧变脸</h3>
+                  <p class="text-gray-700 mt-1">作为四川传统文化的代表，变脸艺术以其神奇的速度和技巧闻名。在锦里古街或蜀风雅韵剧院，能欣赏到地道的川剧表演，除了变脸，吐火、滚灯等绝活也令人叫绝。</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+                <div>
+                  <h3 class="font-medium text-lg">盖碗茶文化</h3>
+                  <p class="text-gray-700 mt-1">“盖为天，碗为人，托为地”，盖碗茶是成都人生活的重要组成部分。人民公园的鹤鸣茶社是体验地道茶文化的好去处，点一杯茉莉花茶，听周围人摆龙门阵，感受慢生活。</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+                <div>
+                  <h3 class="font-medium text-lg">蜀绣工艺</h3>
+                  <p class="text-gray-700 mt-1">作为中国四大名绣之一，蜀绣以其细腻的针法和丰富的色彩著称。在成都蜀绣博物馆，可以近距离欣赏《熊猫》《芙蓉鲤鱼》等经典作品，感受非遗技艺的魅力。</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 侧边栏：旅行实用信息 -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-sm p-6 sticky top-24">
+            <h3 class="text-xl font-medium mb-5 text-primary flex items-center">
+              <i class="fa fa-map-o mr-2"></i> 旅行指南
+            </h3>
+            
+            <div class="space-y-5">
+              <div>
+                <h4 class="font-medium text-dark mb-2">必去景点</h4>
+                <ul class="space-y-2 text-gray-700" id="mustVisit">
+                  <li class="flex justify-between items-center">
+                    <span>宽窄巷子</span>
+                    <span class="text-sm text-gray-500">历史街区</span>
+                  </li>
+                  <li class="flex justify-between items-center">
+                    <span>武侯祠</span>
+                    <span class="text-sm text-gray-500">三国文化</span>
+                  </li>
+                  <li class="flex justify-between items-center">
+                    <span>杜甫草堂</span>
+                    <span class="text-sm text-gray-500">诗圣故居</span>
+                  </li>
+                  <li class="flex justify-between items-center">
+                    <span>都江堰</span>
+                    <span class="text-sm text-gray-500">世界遗产</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="pt-5 border-t border-gray-100">
+                <h4 class="font-medium text-dark mb-2">特色美食</h4>
+                <ul class="space-y-2 text-gray-700" id="localFood">
+                  <li class="flex justify-between items-center">
+                    <span>火锅</span>
+                    <span class="text-sm text-gray-500">麻辣鲜香</span>
+                  </li>
+                  <li class="flex justify-between items-center">
+                    <span>担担面</span>
+                    <span class="text-sm text-gray-500">川味小吃</span>
+                  </li>
+                  <li class="flex justify-between items-center">
+                    <span>钟水饺</span>
+                    <span class="text-sm text-gray-500">传统小吃</span>
+                  </li>
+                  <li class="flex justify-between items-center">
+                    <span>兔头</span>
+                    <span class="text-sm text-gray-500">特色卤味</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="pt-5 border-t border-gray-100">
+                <h4 class="font-medium text-dark mb-2">交通提示</h4>
+                <div id="transportInfo">
+                  <p class="text-gray-700 text-sm mb-2">
+                    <i class="fa fa-subway text-primary mr-1"></i> 地铁覆盖主要景点，推荐办理“天府通”卡
+                  </p>
+                  <p class="text-gray-700 text-sm">
+                    <i class="fa fa-bus text-primary mr-1"></i> 市区公交便利，支持手机扫码支付
+                  </p>
+                </div>
+              </div>
+              
+              <button class="w-full bg-secondary hover:bg-secondary/90 text-white font-medium py-3 rounded-md transition-colors mt-4">
+                <i class="fa fa-download mr-2"></i> 下载完整攻略
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 深度体验推荐 -->
+      <div class="mb-16">
+        <h2 class="text-2xl font-medium mb-6 text-primary">深度体验路线</h2>
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden" id="experienceRoutes">
+          <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-calendar-check-o"></i></div>
+              <h3 class="text-xl font-medium mb-3">历史文化线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">09:00</span>
+                  <span>武侯祠 → 感受三国文化</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">11:30</span>
+                  <span>锦里古街 → 逛非遗小店</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">14:00</span>
+                  <span>杜甫草堂 → 探寻诗圣足迹</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">16:30</span>
+                  <span>青羊宫 → 体验道教文化</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-cutlery"></i></div>
+              <h3 class="text-xl font-medium mb-3">美食寻味线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">10:00</span>
+                  <span>人民公园 → 鹤鸣茶社喝盖碗茶</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">12:00</span>
+                  <span>宽窄巷子 → 尝钟水饺、三大炮</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">15:00</span>
+                  <span>奎星楼街 → 冒椒火辣串串香</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">18:30</span>
+                  <span>小龙翻大江 → 体验网红火锅</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-tree"></i></div>
+              <h3 class="text-xl font-medium mb-3">自然生态线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">08:00</span>
+                  <span>都江堰 → 参观千年水利工程</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">12:00</span>
+                  <span>青城山 → 登“青城天下幽”</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">16:00</span>
+                  <span>街子古镇 → 逛川西民居</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">18:30</span>
+                  <span>返回市区 → 晚餐吃河鲜</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 相关城市推荐 -->
+   
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fa fa-compass mr-2"></i>城探记
+          </h3>
+          <p class="text-gray-400 mb-4">专注城市人文探索，让旅行更有深度。</p>
+          <div class="flex space-x-4 text-gray-400">
+            <a href="#" class="hover:text-white transition-colors"><i class="fa fa-weibo"></i></a>
+            <a href="#" class="hover:text-white transition-colors"><i class="fa fa-wechat"></i></a>
+            <a href="#" class="hover:text-white transition-colors"><i class="fa fa-instagram"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-lg font-medium mb-4">快速链接</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="city-list.html" class="hover:text-white transition-colors">城市列表</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">文旅专题</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">旅行攻略</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">关于我们</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-medium mb-4">联系我们</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li class="flex items-center"><i class="fa fa-envelope mr-2"></i> contact@chengtanji.com</li>
+            <li class="flex items-center"><i class="fa fa-phone mr-2"></i> 400-123-4567</li>
+            <li class="flex items-center"><i class="fa fa-map-marker mr-2"></i> 北京市朝阳区建国路88号</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-medium mb-4">订阅资讯</h4>
+          <p class="text-gray-400 mb-4">获取最新城市探索攻略与专题内容。</p>
+          <div class="flex">
+            <input type="email" placeholder="你的邮箱地址" class="px-4 py-2 rounded-l-md w-full focus:outline-none text-dark">
+            <button class="bg-secondary hover:bg-secondary/90 px-4 py-2 rounded-r-md transition-colors">
+              <i class="fa fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-10 pt-6 text-center text-gray-500 text-sm">
+        电子商务专升本四班
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 城市数据仓库
+    const cityData = {
+      "1": {
+        title: "成都：巴适的天府之国",
+        meta: [
+          "<span><i class='fa fa-map-marker mr-1 text-primary'></i> 四川省 · 西南地区</span>",
+          "<span><i class='fa fa-calendar mr-1 text-primary'></i> 最佳旅行季：3-5月，9-11月</span>",
+          "<span><i class='fa fa-language mr-1 text-primary'></i> 方言：西南官话-成渝片</span>"
+        ],
+        cover: "https://picsum.photos/id/1060/1920/1080",
+        tagline: "\"一座来了就不想走的城市\"，成都的魅力藏在茶馆的龙门阵里，躲在火锅的麻辣中，写在街头巷尾的悠闲里。",
+        description: `
+          <p class="text-gray-700 leading-relaxed">
+            成都，简称“蓉”，是四川省省会，也是西南地区的中心城市。作为古蜀文明的发源地，这里有着4500多年的城市文明史，金沙遗址的太阳神鸟金箔，诉说着古蜀先民的智慧。
+          </p>
+          <p class="text-gray-700 leading-relaxed mt-4">
+            不同于一线城市的快节奏，成都把“慢”刻进了城市基因。街头巷尾的茶馆里，老人端着盖碗茶摆龙门阵（聊天），公园里的市民悠闲地打麻将、唱川剧，连空气中都弥漫着“巴适”（舒适）的气息。
+          </p>
+        `,
+        gallery: `
+          <div class="rounded-lg overflow-hidden">
+            <img src="https://picsum.photos/id/1067/800/600" alt="成都茶馆文化" class="w-full h-64 object-cover img-zoom">
+            <p class="text-sm text-gray-500 mt-2 italic">成都茶馆里的悠闲日常，盖碗茶是标配</p>
+          </div>
+          <div class="rounded-lg overflow-hidden">
+            <img src="https://picsum.photos/id/292/800/600" alt="成都火锅" class="w-full h-64 object-cover img-zoom">
+            <p class="text-sm text-gray-500 mt-2 italic">麻辣鲜香的成都火锅，是城市味觉的灵魂</p>
+          </div>
+        `,
+        culturalSymbols: `
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">川剧变脸</h3>
+              <p class="text-gray-700 mt-1">作为四川传统文化的代表，变脸艺术以其神奇的速度和技巧闻名。在锦里古街或蜀风雅韵剧院，能欣赏到地道的川剧表演，除了变脸，吐火、滚灯等绝活也令人叫绝。</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">盖碗茶文化</h3>
+              <p class="text-gray-700 mt-1">“盖为天，碗为人，托为地”，盖碗茶是成都人生活的重要组成部分。人民公园的鹤鸣茶社是体验地道茶文化的好去处，点一杯茉莉花茶，听周围人摆龙门阵，感受慢生活。</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">蜀绣工艺</h3>
+              <p class="text-gray-700 mt-1">作为中国四大名绣之一，蜀绣以其细腻的针法和丰富的色彩著称。在成都蜀绣博物馆，可以近距离欣赏《熊猫》《芙蓉鲤鱼》等经典作品，感受非遗技艺的魅力。</p>
+            </div>
+          </li>
+        `,
+        mustVisit: `
+          <li class="flex justify-between items-center">
+            <span>宽窄巷子</span>
+            <span class="text-sm text-gray-500">历史街区</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>武侯祠</span>
+            <span class="text-sm text-gray-500">三国文化</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>杜甫草堂</span>
+            <span class="text-sm text-gray-500">诗圣故居</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>都江堰</span>
+            <span class="text-sm text-gray-500">世界遗产</span>
+          </li>
+        `,
+        localFood: `
+          <li class="flex justify-between items-center">
+            <span>火锅</span>
+            <span class="text-sm text-gray-500">麻辣鲜香</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>担担面</span>
+            <span class="text-sm text-gray-500">川味小吃</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>钟水饺</span>
+            <span class="text-sm text-gray-500">传统小吃</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>兔头</span>
+            <span class="text-sm text-gray-500">特色卤味</span>
+          </li>
+        `,
+        transportInfo: `
+          <p class="text-gray-700 text-sm mb-2">
+            <i class="fa fa-subway text-primary mr-1"></i> 地铁覆盖主要景点，推荐办理“天府通”卡
+          </p>
+          <p class="text-gray-700 text-sm">
+            <i class="fa fa-bus text-primary mr-1"></i> 市区公交便利，支持手机扫码支付
+          </p>
+        `,
+        experienceRoutes: `
+          <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-calendar-check-o"></i></div>
+              <h3 class="text-xl font-medium mb-3">历史文化线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">09:00</span>
+                  <span>武侯祠 → 感受三国文化</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">11:30</span>
+                  <span>锦里古街 → 逛非遗小店</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">14:00</span>
+                  <span>杜甫草堂 → 探寻诗圣足迹</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">16:30</span>
+                  <span>青羊宫 → 体验道教文化</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-cutlery"></i></div>
+              <h3 class="text-xl font-medium mb-3">美食寻味线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">10:00</span>
+                  <span>人民公园 → 鹤鸣茶社喝盖碗茶</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">12:00</span>
+                  <span>宽窄巷子 → 尝钟水饺、三大炮</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">15:00</span>
+                  <span>奎星楼街 → 冒椒火辣串串香</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">18:30</span>
+                  <span>小龙翻大江 → 体验网红火锅</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-tree"></i></div>
+              <h3 class="text-xl font-medium mb-3">自然生态线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">08:00</span>
+                  <span>都江堰 → 参观千年水利工程</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">12:00</span>
+                  <span>青城山 → 登“青城天下幽”</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">16:00</span>
+                  <span>街子古镇 → 逛川西民居</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">18:30</span>
+                  <span>返回市区 → 晚餐吃河鲜</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      "2": {
+        title: "苏州：江南园林之城",
+        meta: [
+          "<span><i class='fa fa-map-marker mr-1 text-primary'></i> 江苏省 · 华东地区</span>",
+          "<span><i class='fa fa-calendar mr-1 text-primary'></i> 最佳旅行季：3-5月，9-11月</span>",
+          "<span><i class='fa fa-language mr-1 text-primary'></i> 方言：吴语-太湖片</span>"
+        ],
+        cover: "https://picsum.photos/id/1015/1920/1080",
+        tagline: "\"上有天堂，下有苏杭\"，苏州的园林艺术与水乡风情，构成了江南文化的精髓。",
+        description: `
+          <p class="text-gray-700 leading-relaxed">
+            苏州，古称吴，是江南文化的重要发祥地。这座拥有2500多年历史的城市，以其精美的古典园林闻名于世，拙政园、留园、狮子林等均被列入世界文化遗产。
+          </p>
+          <p class="text-gray-700 leading-relaxed mt-4">
+            苏州的美，在于"水陆并行、河街相邻"的城市格局。平江路的青石板路、山塘街的小桥流水、周庄的水乡风情，让这座城市处处充满诗情画意。苏绣、评弹、昆曲等非遗文化，更增添了苏州的人文底蕴。
+          </p>
+        `,
+        gallery: `
+          <div class="rounded-lg overflow-hidden">
+            <img src="https://picsum.photos/id/1015/800/600" alt="苏州园林" class="w-full h-64 object-cover img-zoom">
+            <p class="text-sm text-gray-500 mt-2 italic">拙政园——中国古典园林的代表作</p>
+          </div>
+          <div class="rounded-lg overflow-hidden">
+            <img src="https://picsum.photos/id/164/800/600" alt="苏州水乡" class="w-full h-64 object-cover img-zoom">
+            <p class="text-sm text-gray-500 mt-2 italic">平江路历史街区，感受小桥流水人家</p>
+          </div>
+        `,
+        culturalSymbols: `
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">苏州园林</h3>
+              <p class="text-gray-700 mt-1">苏州园林是中国古典园林的杰出代表，以"虽由人作，宛自天开"为造园理念，融建筑、山水、花木于一体，体现了江南文人的审美追求。</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">苏绣</h3>
+              <p class="text-gray-700 mt-1">作为中国四大名绣之一，苏绣以针法细腻、色彩清雅著称。其代表作品《猫》栩栩如生，体现了苏绣"平、齐、细、密、匀、顺、和、光"的特点。</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">评弹</h3>
+              <p class="text-gray-700 mt-1">苏州评弹是一种说唱艺术，包括评话和弹词，以吴语演唱，曲调婉转悠扬。在平江路的茶馆里，常能欣赏到地道的评弹表演。</p>
+            </div>
+          </li>
+        `,
+        mustVisit: `
+          <li class="flex justify-between items-center">
+            <span>拙政园</span>
+            <span class="text-sm text-gray-500">中国四大名园之首</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>平江路</span>
+            <span class="text-sm text-gray-500">历史文化街区</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>留园</span>
+            <span class="text-sm text-gray-500">世界文化遗产</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>周庄古镇</span>
+            <span class="text-sm text-gray-500">中国第一水乡</span>
+          </li>
+        `,
+        localFood: `
+          <li class="flex justify-between items-center">
+            <span>松鼠桂鱼</span>
+            <span class="text-sm text-gray-500">苏帮菜代表</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>阳澄湖大闸蟹</span>
+            <span class="text-sm text-gray-500">季节性美食</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>奥灶面</span>
+            <span class="text-sm text-gray-500">传统面食</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>苏式汤面</span>
+            <span class="text-sm text-gray-500">讲究"头汤面"</span>
+          </li>
+        `,
+        transportInfo: `
+          <p class="text-gray-700 text-sm mb-2">
+            <i class="fa fa-subway text-primary mr-1"></i> 地铁1、2、4号线覆盖主要景点
+          </p>
+          <p class="text-gray-700 text-sm">
+            <i class="fa fa-bicycle text-primary mr-1"></i> 推荐租自行车游览古城，感受水乡风情
+          </p>
+        `,
+        experienceRoutes: `
+          <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-calendar-check-o"></i></div>
+              <h3 class="text-xl font-medium mb-3">园林文化线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">09:00</span>
+                  <span>拙政园 → 领略园林艺术</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">11:30</span>
+                  <span>苏州博物馆 → 贝聿铭设计</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">14:00</span>
+                  <span>留园 → 看"咫尺山林"</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">16:30</span>
+                  <span>山塘街 → 夜游水乡</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-cutlery"></i></div>
+              <h3 class="text-xl font-medium mb-3">美食寻味线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">09:30</span>
+                  <span>朱鸿兴 → 吃头汤苏式汤面</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">12:00</span>
+                  <span>松鹤楼 → 品尝松鼠桂鱼</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">15:00</span>
+                  <span>万福兴 → 买苏式糕点</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">18:30</span>
+                  <span>平江路 → 尝鸡头米糖水</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-tree"></i></div>
+              <h3 class="text-xl font-medium mb-3">水乡古镇线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">08:30</span>
+                  <span>周庄 → 参观张厅、沈厅</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">12:00</span>
+                  <span>周庄 → 品尝万三蹄</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">14:30</span>
+                  <span>同里 → 逛退思园</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">17:30</span>
+                  <span>返回市区 → 晚餐吃奥灶面</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      "3": {
+        title: "西安：十三朝古都",
+        meta: [
+          "<span><i class='fa fa-map-marker mr-1 text-primary'></i> 陕西省 · 西北地区</span>",
+          "<span><i class='fa fa-calendar mr-1 text-primary'></i> 最佳旅行季：4-5月，9-10月</span>",
+          "<span><i class='fa fa-language mr-1 text-primary'></i> 方言：中原官话-关中片</span>"
+        ],
+        cover: "https://picsum.photos/id/1033/1920/1080",
+        tagline: "从兵马俑到明城墙，西安的每一块砖瓦都诉说着千年历史。",
+        description: `
+          <p class="text-gray-700 leading-relaxed">
+            西安，古称长安，是中国历史上建都朝代最多、时间最长的都城，先后有13个王朝在此建都。作为丝绸之路的起点，西安是中华文明和东方文明的重要发祥地之一。
+          </p>
+          <p class="text-gray-700 leading-relaxed mt-4">
+            这座城市既有秦始皇兵马俑、大雁塔等世界级文化遗产，也有回民街、永兴坊等充满烟火气的美食街区。古今交融的城市风貌，让西安成为感受中国历史文化的必访之地。
+          </p>
+        `,
+        gallery: `
+          <div class="rounded-lg overflow-hidden">
+            <img src="https://picsum.photos/id/1033/800/600" alt="兵马俑" class="w-full h-64 object-cover img-zoom">
+            <p class="text-sm text-gray-500 mt-2 italic">秦始皇兵马俑——世界第八大奇迹</p>
+          </div>
+          <div class="rounded-lg overflow-hidden">
+            <img src="https://picsum.photos/id/1040/800/600" alt="西安城墙" class="w-full h-64 object-cover img-zoom">
+            <p class="text-sm text-gray-500 mt-2 italic">明城墙——中国现存最完整的古城墙</p>
+          </div>
+        `,
+        culturalSymbols: `
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">秦俑文化</h3>
+              <p class="text-gray-700 mt-1">秦始皇兵马俑是中国古代辉煌文明的一张金字名片，被誉为"世界第八大奇迹"。这些陶俑形态各异、栩栩如生，展现了秦代军队的威严。</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">唐文化</h3>
+              <p class="text-gray-700 mt-1">作为唐朝都城，西安留存了大量唐文化遗迹。大雁塔、大唐不夜城、华清池等景点，以及唐装、唐代乐舞等，都让人感受到盛唐气象。</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="text-primary text-xl mt-1"><i class="fa fa-star"></i></div>
+            <div>
+              <h3 class="font-medium text-lg">陕北民俗</h3>
+              <p class="text-gray-700 mt-1">安塞腰鼓、陕北民歌、剪纸等民俗文化，展现了西安周边地区的人文风情。每年春节，西安的庙会更是热闹非凡，充满年味。</p>
+            </div>
+          </li>
+        `,
+        mustVisit: `
+          <li class="flex justify-between items-center">
+            <span>秦始皇兵马俑</span>
+            <span class="text-sm text-gray-500">世界文化遗产</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>大雁塔</span>
+            <span class="text-sm text-gray-500">唐代建筑</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>明城墙</span>
+            <span class="text-sm text-gray-500">古城标志</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>回民街</span>
+            <span class="text-sm text-gray-500">美食街区</span>
+          </li>
+        `,
+        localFood: `
+          <li class="flex justify-between items-center">
+            <span>羊肉泡馍</span>
+            <span class="text-sm text-gray-500">西安名吃</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>肉夹馍</span>
+            <span class="text-sm text-gray-500">陕西特色</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>biangbiang面</span>
+            <span class="text-sm text-gray-500">关中面食</span>
+          </li>
+          <li class="flex justify-between items-center">
+            <span>甑糕</span>
+            <span class="text-sm text-gray-500">传统甜点</span>
+          </li>
+        `,
+        transportInfo: `
+          <p class="text-gray-700 text-sm mb-2">
+            <i class="fa fa-subway text-primary mr-1"></i> 地铁1-4号线覆盖市区主要景点
+          </p>
+          <p class="text-gray-700 text-sm">
+            <i class="fa fa-bus text-primary mr-1"></i> 游5路公交直达兵马俑景区
+          </p>
+        `,
+        experienceRoutes: `
+          <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-calendar-check-o"></i></div>
+              <h3 class="text-xl font-medium mb-3">秦汉文化线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">08:30</span>
+                  <span>秦始皇兵马俑 → 参观一号坑</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">12:00</span>
+                  <span>临潼 → 吃油泼面午餐</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">14:00</span>
+                  <span>秦始皇陵 → 了解帝王陵墓</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">16:30</span>
+                  <span>返回市区 → 逛永兴坊</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-cutlery"></i></div>
+              <h3 class="text-xl font-medium mb-3">美食寻味线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">09:30</span>
+                  <span>老孙家 → 吃羊肉泡馍</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">11:30</span>
+                  <span>回民街 → 尝甑糕、柿子饼</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">14:00</span>
+                  <span>子午路张记 → 吃肉夹馍</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">18:30</span>
+                  <span>醉长安 → 品陕菜晚宴</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-tree"></i></div>
+              <h3 class="text-xl font-medium mb-3">唐文化线（1天）</h3>
+              <ul class="space-y-2 text-gray-700 text-sm">
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">09:00</span>
+                  <span>大雁塔 → 登塔远眺</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">11:30</span>
+                  <span>大唐不夜城 → 感受盛唐氛围</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">14:00</span>
+                  <span>华清池 → 参观皇家园林</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-primary mr-2">18:00</span>
+                  <span>观看《长恨歌》实景演出</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        `
+      }
+    };
+
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. 移动端菜单切换
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      // 2. 根据URL参数加载城市数据
+      const urlParams = new URLSearchParams(window.location.search);
+      const cityId = urlParams.get('id') || '1'; // 默认显示成都
+      const city = cityData[cityId] || cityData['1']; // 容错处理
+
+      // 3. 更新页面内容
+      document.title = `${city.title} - 城探记`;
+      document.getElementById('cityTitle').textContent = city.title;
+      document.getElementById('breadcrumbCityName').textContent = city.title;
+      document.getElementById('cityMeta').innerHTML = city.meta.join('');
+      document.getElementById('cityCover').src = city.cover;
+      document.getElementById('cityCover').alt = city.title;
+      document.getElementById('cityTagline').textContent = city.tagline;
+      document.getElementById('cityDescription').innerHTML = city.description;
+      document.getElementById('cityGallery').innerHTML = city.gallery;
+      document.getElementById('culturalSymbols').innerHTML = city.culturalSymbols;
+      document.getElementById('mustVisit').innerHTML = city.mustVisit;
+      document.getElementById('localFood').innerHTML = city.localFood;
+      document.getElementById('transportInfo').innerHTML = city.transportInfo;
+      document.getElementById('experienceRoutes').innerHTML = city.experienceRoutes;
+
+      // 4. 图片懒加载实现
+      const lazyImages = document.querySelectorAll('img');
+      if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const image = entry.target;
+              image.classList.add('opacity-100');
+              image.classList.remove('opacity-0');
+              imageObserver.unobserve(image);
+            }
+          });
+        });
+
+        lazyImages.forEach(image => {
+          image.classList.add('transition-opacity', 'duration-500', 'opacity-0');
+          imageObserver.observe(image);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
