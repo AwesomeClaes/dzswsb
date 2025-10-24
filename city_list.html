@@ -3,249 +3,398 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>旅游</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#2A637D',
-            secondary: '#F49D6E',
-            light: '#F8F9FA',
-            dark: '#2C3E50'
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif']
-          }
-        }
-      }
+  <title>城探记 - 城市列表</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-  </script>
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .hover-scale {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    body {
+      font-family: 'Microsoft YaHei', sans-serif;
+      color: #333;
+      line-height: 1.6;
+      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* 顶部导航 */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: #fff;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2A637D;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-icon {
+      margin-right: 8px;
+      font-size: 1.8rem;
+    }
+
+    .nav {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1rem;
+      padding: 5px 0;
+      position: relative;
+    }
+
+    .nav a.active {
+      color: #2A637D;
+    }
+
+    .nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #2A637D;
+    }
+
+    /* 面包屑 */
+    .breadcrumb {
+      padding: 15px 20px;
+      font-size: 0.9rem;
+      color: #666;
+      border-bottom: 1px solid #eee;
+    }
+
+    .breadcrumb a {
+      color: #666;
+      text-decoration: none;
+    }
+
+    .breadcrumb span {
+      margin: 0 5px;
+    }
+
+    /* 主内容区 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      flex: 1;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #333;
+      font-weight: normal;
+    }
+
+    .page-desc {
+      color: #666;
+      margin-bottom: 30px;
+      max-width: 800px;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 30px;
+    }
+
+    .region-select {
+      padding: 8px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: #333;
+      background-color: #fff;
+    }
+
+    /* 城市卡片网格 */
+    .cities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .city-card {
+      text-decoration: none;
+      color: #333;
+      display: block;
+    }
+
+    .city-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .city-card:hover .city-img {
+      transform: scale(1.03);
+    }
+
+    .region-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      background-color: #f08c54;
+      color: white;
+      font-size: 0.8rem;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .city-name {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .city-desc {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* 页脚 */
+    .footer {
+      background-color: #f8f8f8;
+      border-top: 1px solid #eee;
+      padding: 40px 20px 20px;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .footer-column h3 {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .footer-links a:hover {
+      color: #2A637D;
+    }
+
+    .contact-info {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .subscribe-form {
+      margin-top: 15px;
+    }
+
+    
+
+
+    .subscribe-btn:hover {
+      background-color: #1e4d63;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 30px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      text-align: center;
+      color: #999;
+      font-size: 0.8rem;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .nav {
+        gap: 15px;
       }
-      .hover-scale:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      
+      .page-title {
+        font-size: 1.6rem;
+      }
+      
+      .cities-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-<body class="bg-light font-sans text-dark">
-  <!-- 导航栏 -->
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="./index.html" class="text-2xl font-bold text-primary flex items-center">
-        <i class="fa fa-compass mr-2"></i>城探记
-      </a>
-      <nav class="hidden md:flex space-x-8">
-        <a href="/city_list.html" class="text-primary border-b-2 border-primary pb-1 font-medium">城市列表</a>
-        <a href="#" class="text-dark hover:text-primary transition-colors font-medium">文旅专题</a>
-        <a href="#" class="text-dark hover:text-primary transition-colors font-medium">旅行攻略</a>
-        <a href="#" class="text-dark hover:text-primary transition-colors font-medium">关于我们</a>
-      </nav>
-      <button class="md:hidden text-dark text-xl">
-        <i class="fa fa-bars"></i>
-      </button>
+<body>
+  <!-- 顶部导航 -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🧭</span>
+      城探记
     </div>
+    <nav class="nav">
+      <a href="./index.html">首页</a>
+      <a href="#" class="active">城市列表</a>
+      <a href="#">文旅专题</a>
+      <a href="#">旅行攻略</a>
+      <a href="#">关于我们</a>
+    </nav>
   </header>
 
   <!-- 面包屑导航 -->
-  <section class="bg-white py-4 border-b">
-    <div class="container mx-auto px-4">
-      <div class="flex items-center text-sm text-gray-500">
-        <a href="./index.html" class="hover:text-primary transition-colors">首页</a>
-        <i class="fa fa-angle-right mx-2 text-gray-400"></i>
-        <span class="text-primary">城市列表</span>
-      </div>
+  <div class="breadcrumb">
+    <a href="#">首页</a>
+    <span>></span>
+    <a href="#" class="active">城市列表</a>
+  </div>
+
+  <!-- 主内容区 -->
+  <div class="container">
+    <h1 class="page-title">探索中国城市人文</h1>
+    <p class="page-desc">按区域筛选城市，发现不同地域的文化特色、历史底蕴与生活方式，规划你的深度旅行。</p>
+
+    <div class="filter-bar">
+      <select class="region-select">
+        <option value="all">全部区域</option>
+        <option value="east">华东地区</option>
+        <option value="south">西南地区</option>
+        <option value="north">西北地区</option>
+        <option value="central">华中地区</option>
+      </select>
     </div>
-  </section>
 
-  <!-- 筛选与城市列表 -->
-  <section class="py-12">
-    <div class="container mx-auto px-4">
-      <!-- 页面标题与筛选 -->
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10">
-        <div>
-          <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-light mb-2">探索中国城市人文</h1>
-          <p class="text-gray-500 max-w-xl">按区域筛选城市，发现不同地域的文化特色、历史底蕴与生活方式，规划你的深度旅行。</p>
-        </div>
-        <!-- 区域筛选 -->
-        <div class="mt-4 md:mt-0">
-          <select class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 text-dark">
-            <option value="all">全部区域</option>
-            <option value="east">华东地区</option>
-            <option value="south">西南地区</option>
-            <option value="north">西北地区</option>
-            <option value="central">华中地区</option>
-          </select>
-        </div>
-      </div>
+    <!-- 城市卡片网格 -->
+    <div class="cities-grid">
+      <!-- 成都 -->
+      <a href="./city-detail.html" class="city-card">
+        <img src="https://q3.itc.cn/q_70/images03/20240502/a8f1c2df18e04ab982c9b62fcf3b4091.jpeg" alt="成都" class="city-img">
+        <span class="region-tag">西南地区</span>
+        <h3 class="city-name">成都：巴适的天府之国</h3>
+        <p class="city-desc">作为古蜀文明的发源地，成都既有武侯祠、杜甫草堂的历史厚重，也有春熙路、宽窄巷子的现代活力。这里的生活节奏很慢，一碗盖碗茶、一场川剧变脸、一顿麻辣火锅，都是“巴适”的注脚。</p>
+      </a>
 
-      <!-- 城市列表（网格布局，每个卡片为三级页面入口） -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- 成都 -->
-        <a href="./city-detail.html" class="bg-white rounded-lg overflow-hidden shadow-sm hover-scale group">
-          <div class="relative h-56 overflow-hidden">
-            <img src="https://q3.itc.cn/q_70/images03/20240502/a8f1c2df18e04ab982c9b62fcf3b4091.jpeg" alt="成都" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute top-4 left-4 bg-secondary text-white text-xs px-3 py-1 rounded-full">西南地区</div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-medium mb-3 text-dark group-hover:text-primary transition-colors">成都：巴适的天府之国</h3>
-            <p class="text-gray-600 mb-4 line-clamp-2">作为古蜀文明的发源地，成都既有武侯祠、杜甫草堂的历史厚重，也有春熙路、宽窄巷子的现代活力。这里的生活节奏很慢，一碗盖碗茶、一场川剧变脸、一顿麻辣火锅，都是“巴适”的注脚。</p>
-            <div class="flex items-center justify-between">
-             
-              <span class="text-primary text-sm font-medium">查看详情 <i class="fa fa-angle-right ml-1"></i></span>
-            </div>
-          </div>
-        </a>
+      <!-- 苏州 -->
+      <a href="./city-detail.html?id=2" class="city-card">
+        <img src="https://img2.baidu.com/it/u=143020025,155729444&fm=253&app=138&f=JPEG?w=800&h=1067" alt="苏州" class="city-img">
+        <span class="region-tag">华东地区</span>
+        <h3 class="city-name">苏州：江南园林之城</h3>
+        <p class="city-desc">"上有天堂，下有苏杭"，苏州以古典园林闻名世界，拙政园、留园等园林是中式美学的典范。平江路的青石板路、山塘街的水乡风情，以及苏绣、评弹等非遗文化，共同构成了苏州的温婉气质。</p>
+      </a>
 
-        <!-- 苏州 -->
-        <a href="./city-detail.html?id=2" class="bg-white rounded-lg overflow-hidden shadow-sm hover-scale group">
-          <div class="relative h-56 overflow-hidden">
-            <img src="https://img2.baidu.com/it/u=143020025,155729444&fm=253&app=138&f=JPEG?w=800&h=1067" alt="苏州" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute top-4 left-4 bg-secondary text-white text-xs px-3 py-1 rounded-full">华东地区</div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-medium mb-3 text-dark group-hover:text-primary transition-colors">苏州：江南园林之城</h3>
-            <p class="text-gray-600 mb-4 line-clamp-2">“上有天堂，下有苏杭”，苏州以古典园林闻名世界，拙政园、留园等园林是中式美学的典范。平江路的青石板路、山塘街的水乡风情，以及苏绣、评弹等非遗文化，共同构成了苏州的温婉气质。</p>
-            <div class="flex items-center justify-between">
-              
-              <span class="text-primary text-sm font-medium">查看详情 <i class="fa fa-angle-right ml-1"></i></span>
-            </div>
-          </div>
-        </a>
+      <!-- 西安 -->
+      <a href="./city-detail.html?id=3" class="city-card">
+        <img src="https://miaobi-lite.bj.bcebos.com/miaobi/5mao/b%276ZKf5qW8566A5LuLXzE3MzY2MTc1MTMuNDc3NTg5OA%3D%3D%27/0.png" alt="西安" class="city-img">
+        <span class="region-tag">西北地区</span>
+        <h3 class="city-name">西安：十三朝古都</h3>
+        <p class="city-desc">西安是中华文明的重要发祥地，秦始皇兵马俑、大雁塔、明城墙等古迹见证了千年历史。回民街的羊肉泡馍、肉夹馍等美食充满西北风味，而大唐不夜城则重现了盛唐的繁华景象。</p>
+      </a>
 
-        <!-- 西安 -->
-        <a href="./city-detail.html?id=3" class="bg-white rounded-lg overflow-hidden shadow-sm hover-scale group">
-          <div class="relative h-56 overflow-hidden">
-            <img src="https://miaobi-lite.bj.bcebos.com/miaobi/5mao/b%276ZKf5qW8566A5LuLXzE3MzY2MTc1MTMuNDc3NTg5OA%3D%3D%27/0.png" alt="西安" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute top-4 left-4 bg-secondary text-white text-xs px-3 py-1 rounded-full">西北地区</div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-medium mb-3 text-dark group-hover:text-primary transition-colors">西安：十三朝古都</h3>
-            <p class="text-gray-600 mb-4 line-clamp-2">西安是中华文明的重要发祥地，秦始皇兵马俑、大雁塔、明城墙等古迹见证了千年历史。回民街的羊肉泡馍、肉夹馍等美食充满西北风味，而大唐不夜城则重现了盛唐的繁华景象。</p>
-            <div class="flex items-center justify-between">
-                            <span class="text-primary text-sm font-medium">查看详情 <i class="fa fa-angle-right ml-1"></i></span>
-            </div>
-          </div>
-        </a>
+      <!-- 杭州 -->
+      <a href="./city-detail.html?id=4" class="city-card">
+        <img src="https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2025%2F1023%2Fc9e74ff6j00t4ku1x00iid000hf00clp.jpg&thumbnail=660x2147483647&quality=80&type=jpg" alt="杭州" class="city-img">
+        <span class="region-tag">华东地区</span>
+        <h3 class="city-name">杭州：人间天堂</h3>
+        <p class="city-desc">杭州因西湖而闻名，"淡妆浓抹总相宜"的西湖十景是自然与人文的完美结合。灵隐寺的禅意、河坊街的市井气息，以及龙井茶香，让这座城市兼具诗意与烟火气，是江南文化的代表。</p>
+      </a>
 
-        <!-- 杭州 -->
-        <a href="./city-detail.html?id=4" class="bg-white rounded-lg overflow-hidden shadow-sm hover-scale group">
-          <div class="relative h-56 overflow-hidden">
-            <img src="https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2025%2F1023%2Fc9e74ff6j00t4ku1x00iid000hf00clp.jpg&thumbnail=660x2147483647&quality=80&type=jpg" alt="杭州" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute top-4 left-4 bg-secondary text-white text-xs px-3 py-1 rounded-full">华东地区</div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-medium mb-3 text-dark group-hover:text-primary transition-colors">杭州：人间天堂</h3>
-            <p class="text-gray-600 mb-4 line-clamp-2">杭州因西湖而闻名，“淡妆浓抹总相宜”的西湖十景是自然与人文的完美结合。灵隐寺的禅意、河坊街的市井气息，以及龙井茶香，让这座城市兼具诗意与烟火气，是江南文化的代表。</p>
-            <div class="flex items-center justify-between">
-             
-              <span class="text-primary text-sm font-medium">查看详情 <i class="fa fa-angle-right ml-1"></i></span>
-            </div>
-          </div>
-        </a>
+      <!-- 昆明 -->
+      <a href="./city-detail.html?id=5" class="city-card">
+        <img src="https://picsum.photos/id/1039/800/600" alt="昆明" class="city-img">
+        <span class="region-tag">西南地区</span>
+        <h3 class="city-name">昆明：春城花都</h3>
+        <p class="city-desc">昆明四季如春，气候宜人，滇池的波光、石林的奇景是其自然名片。作为云南的省会，这里汇聚了云南各民族的文化，斗南花市的鲜花、过桥米线的鲜美，让这座城市充满生机与多元魅力。</p>
+      </a>
 
-        <!-- 昆明 -->
-        <a href="./city-detail.html?id=5" class="bg-white rounded-lg overflow-hidden shadow-sm hover-scale group">
-          <div class="relative h-56 overflow-hidden">
-            <img src="https://picsum.photos/id/1039/800/600" alt="昆明" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute top-4 left-4 bg-secondary text-white text-xs px-3 py-1 rounded-full">西南地区</div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-medium mb-3 text-dark group-hover:text-primary transition-colors">昆明：春城花都</h3>
-            <p class="text-gray-600 mb-4 line-clamp-2">昆明四季如春，气候宜人，滇池的波光、石林的奇景是其自然名片。作为云南的省会，这里汇聚了云南各民族的文化，斗南花市的鲜花、过桥米线的鲜美，让这座城市充满生机与多元魅力。</p>
-            <div class="flex items-center justify-between">
-             
-              <span class="text-primary text-sm font-medium">查看详情 <i class="fa fa-angle-right ml-1"></i></span>
-            </div>
-          </div>
-        </a>
-
-        <!-- 洛阳 -->
-        <a href="./city-detail.html?id=6" class="bg-white rounded-lg overflow-hidden shadow-sm hover-scale group">
-          <div class="relative h-56 overflow-hidden">
-            <img src="https://picsum.photos/id/1043/800/600" alt="洛阳" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute top-4 left-4 bg-secondary text-white text-xs px-3 py-1 rounded-full">华中地区</div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-medium mb-3 text-dark group-hover:text-primary transition-colors">洛阳：牡丹花城</h3>
-            <p class="text-gray-600 mb-4 line-clamp-2">洛阳是九朝古都，龙门石窟是世界文化遗产，白马寺是中国第一座佛教寺院，见证了佛教在中国的传播。每年春季的牡丹花会吸引众多游客，而洛阳水席则是当地特色美食，历史悠久。</p>
-            <div class="flex items-center justify-between">
-             
-              <span class="text-primary text-sm font-medium">查看详情 <i class="fa fa-angle-right ml-1"></i></span>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <!-- 分页 -->
-      <div class="flex justify-center mt-12">
-        <div class="flex space-x-2">
-          <button class="w-10 h-10 rounded-md border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors">
-            <i class="fa fa-angle-left"></i>
-          </button>
-          <button class="w-10 h-10 rounded-md bg-primary text-white flex items-center justify-center">1</button>
-          <button class="w-10 h-10 rounded-md border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">2</button>
-          <button class="w-10 h-10 rounded-md border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">3</button>
-          <button class="w-10 h-10 rounded-md border border-gray-300 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors">
-            <i class="fa fa-angle-right"></i>
-          </button>
-        </div>
-      </div>
+      <!-- 洛阳 -->
+      <a href="./city-detail.html?id=6" class="city-card">
+        <img src="https://picsum.photos/id/1043/800/600" alt="洛阳" class="city-img">
+        <span class="region-tag">华中地区</span>
+        <h3 class="city-name">洛阳：牡丹花城</h3>
+        <p class="city-desc">洛阳是九朝古都，龙门石窟是世界文化遗产，白马寺是中国第一座佛教寺院，见证了佛教在中国的传播。每年春季的牡丹花会吸引众多游客，而洛阳水席则是当地特色美食，历史悠久。</p>
+      </a>
     </div>
-  </section>
+  </div>
 
   <!-- 页脚 -->
-  <footer class="bg-dark text-white py-12">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <h3 class="text-xl font-bold mb-4 flex items-center">
-            <i class="fa fa-compass mr-2"></i>城探记
-          </h3>
-          <p class="text-gray-400 mb-4">专注城市人文探索，让旅行更有深度。</p>
-          <div class="flex space-x-4 text-gray-400">
-            <a href="#" class="hover:text-white transition-colors"><i class="fa fa-weibo"></i></a>
-            <a href="#" class="hover:text-white transition-colors"><i class="fa fa-wechat"></i></a>
-            <a href="#" class="hover:text-white transition-colors"><i class="fa fa-instagram"></i></a>
-          </div>
-        </div>
-        <div>
-          <h4 class="text-lg font-medium mb-4">快速链接</h4>
-          <ul class="space-y-2 text-gray-400">
-            <li><a href="./city-list.html" class="hover:text-white transition-colors">城市列表</a></li>
-            <li><a href="#" class="hover:text-white transition-colors">文旅专题</a></li>
-            <li><a href="#" class="hover:text-white transition-colors">旅行攻略</a></li>
-            <li><a href="#" class="hover:text-white transition-colors">关于我们</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-medium mb-4">联系我们</h4>
-          <ul class="space-y-2 text-gray-400">
-            <li class="flex items-center"><i class="fa fa-envelope mr-2"></i> contact@chengtanji.com</li>
-            <li class="flex items-center"><i class="fa fa-phone mr-2"></i> 400-123-4567</li>
-            <li class="flex items-center"><i class="fa fa-map-marker mr-2"></i> 北京市朝阳区建国路88号</li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-medium mb-4">订阅资讯</h4>
-          <p class="text-gray-400 mb-4">获取最新城市探索攻略与专题内容。</p>
-          <div class="flex">
-            <input type="email" placeholder="你的邮箱地址" class="px-4 py-2 rounded-l-md w-full focus:outline-none text-dark">
-            <button class="bg-secondary hover:bg-secondary/90 px-4 py-2 rounded-r-md transition-colors">
-              <i class="fa fa-paper-plane"></i>
-            </button>
-          </div>
-        </div>
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>城探记</h3>
+        <p class="contact-info">专注城市人文探索，让旅行更有深度。我们致力于挖掘每个城市的独特魅力，为旅行者提供有温度的城市指南。</p>
       </div>
-      <div class="border-t border-gray-800 mt-10 pt-6 text-center text-gray-500 text-sm">
-      电子商务专升本四班
-      </div>
+           
+     
+      
+      
+    </div>
+    
+    <div class="footer-bottom">
+      <p>电子商务专升本四班 © 2025 城探记 - 探索城市人文之美</p>
     </div>
   </footer>
+
+  <script>
+    // 区域筛选功能
+    document.querySelector('.region-select').addEventListener('change', function() {
+      const selectedRegion = this.value;
+      const cityCards = document.querySelectorAll('.city-card');
+      
+      cityCards.forEach(card => {
+        const region = card.querySelector('.region-tag').textContent;
+        const regionMap = {
+          'east': '华东地区',
+          'south': '西南地区',
+          'north': '西北地区',
+          'central': '华中地区'
+        };
+        
+        if (selectedRegion === 'all' || regionMap[selectedRegion] === region) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
